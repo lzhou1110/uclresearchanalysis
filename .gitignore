@@ -2,5 +2,12 @@
 .idea/
 .ipynb_checkpoints/
 __pycache__/
-data/
+data/florida/twitter
+data/florida/pickle
+data/nyc/twitter
+data/nyc/pickle
+data/givenchy/twitter
+data/givenchy/pickle
+data/hawking/twitter
+data/hawking/pickle
 other/
