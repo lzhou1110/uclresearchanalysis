@@ -9,8 +9,15 @@ config = configparser.RawConfigParser()
 config.read('configfile.properties')
 profile = config.get(BASE, 'profile')
 
-settings = {}
 root_path = os.getcwd()
+
+settings = {}
+settings['calculate'] = {}
+settings['calculate']['uniquetweets'] = config.get(BASE, 'calculate.uniquetweets') == 'True'
+settings['calculate']['uniqueusers'] = config.get(BASE, 'calculate.uniqueusers') == 'True'
+settings['calculate']['network'] = config.get(BASE, 'calculate.network') == 'True'
+settings['calculate']['analysis'] = config.get(BASE, 'calculate.analysis') == 'True'
+
 settings['timeframe'] = config.get(BASE, 'timeframe') 
 settings['path'] = {}
 settings['path']['cwd'] = root_path + config.get(profile, 'path.project') 
@@ -23,6 +30,7 @@ settings['path']['pickle']['tweets_dataframe'] = pickle_path+ config.get(profile
 settings['path']['pickle']['users_dataframe'] = pickle_path+ config.get(profile, 'path.pickle.users_dataframe')
 settings['path']['pickle']['network_dataframe'] = pickle_path+ config.get(profile, 'path.pickle.network_dataframe')
 settings['data'] = {}
+settings['data']['starttime'] = config.get(profile, 'data.starttime')
 settings['data']['eventname'] = config.get(profile, 'data.eventname')
 settings['data']['dates'] = config.get(profile, 'data.dates').split(',')
 settings['data']['phrases'] = config.get(profile, 'data.phrases').split(',')
