@@ -19,9 +19,13 @@ from datetime import timezone
 from datetime import timedelta
 from pprint import pprint
 
+import matplotlib
+matplotlib.use('Agg') # Must be before importing matplotlib.pyplot or pylab!
+
 # Plots
 import seaborn as sns
 sns.set(color_codes=True)
+
 import matplotlib.pylab as plt
 plt.rcParams['figure.figsize'] = [15, 9]
 
