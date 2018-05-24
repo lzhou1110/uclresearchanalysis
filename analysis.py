@@ -30,11 +30,18 @@ import matplotlib.pylab as plt
 plt.rcParams['figure.figsize'] = [15, 9]
 
 import config
-from config import load_us_city_state_files
-city_to_state_dict, abbrev_to_state_dict, state_to_state_dict = load_us_city_state_files()
-
+from config import load_tweets_dataframe
+from config import dump_tweets_dataframe
+from config import load_users_dataframe
+from config import dump_users_dataframe
+from config import load_network_dataframe
+from config import dump_network_dataframe
 from config import load_friends_dictionary
-friends_dictionary = load_friends_dictionary()
+from config import dump_friends_dictionary
+from config import load_needcrawl_set
+from config import dump_needcrawl_set
+from config import load_newcrawl_dictionary
+from config import dump_newcrawl_dictionary
 
 
 # In[2]:
@@ -44,6 +51,7 @@ calculate_uniquetweets = config.settings['calculate']['uniquetweets']
 calculate_uniqueusers = config.settings['calculate']['uniqueusers']
 calculate_network = config.settings['calculate']['network']
 calculate_analysis = config.settings['calculate']['analysis']
+calculate_friends = config.settings['calculate']['friends']
 
 file_input_path = config.settings['path']['twitter']
 dates = config.settings['data']['dates']
@@ -148,16 +156,25 @@ def find_unique_tweets_crawled():
 if calculate_uniquetweets:
     unique_tweets = find_unique_tweets_crawled()
     print(unique_tweets.head())
-    with open(config.settings['path']['pickle']['tweets_dataframe'], 'wb') as tweets_dataframe_file:
-        pickle.dump(unique_tweets, tweets_dataframe_file)
+    dump_tweets_dataframe(unique_tweets)
 
+unique_tweets = load_tweets_dataframe()
+
+
+# # Load Friends, and add new crawl relationships if necessary
 
 # In[6]:
 
 
-with open(config.settings['path']['pickle']['tweets_dataframe'], 'rb') as tweets_dataframe_file:
-        unique_tweets = pickle.load(tweets_dataframe_file)
-        pprint('Loaded {} entries'.format(len(unique_tweets)))
+def merge_new_friends_dictionary():
+    friends_dictionary = load_friends_dictionary()
+    newcrawl_dictionary = load_newcrawl_dictionary()
+    dump_friends_dictionary({**friends_dictionary, **newcrawl_dictionary})
+
+if calculate_friends:
+    merge_new_friends_dictionary()
+    
+friends_dictionary = load_friends_dictionary()
 
 
 # # Unique Users
@@ -226,21 +243,40 @@ def find_unique_users():
 if calculate_uniqueusers:
     unique_users = find_unique_users()
     print(unique_users.head())
-    with open(config.settings['path']['pickle']['users_dataframe'], 'wb') as users_dataframe_file:
-        pickle.dump(unique_users, users_dataframe_file)
+    dump_users_dataframe(unique_users)
 
+unique_users = load_users_dataframe()
+
+
+# # Check Friends Dictionary
 
 # In[9]:
 
 
-with open(config.settings['path']['pickle']['users_dataframe'], 'rb') as users_dataframe_file:
-        unique_users = pickle.load(users_dataframe_file)
-        pprint('Loaded {} entries'.format(len(unique_users)))
+def verify_friends_dictionary():
+    friends_dictionary = load_friends_dictionary()
+    crawled_set = set(friends_dictionary.keys())
+    users_set = set(unique_users.user_id)
+    need_to_crawl = users_set - crawled_set
+    dump_needcrawl_set(need_to_crawl)
+    print('Number of users still need to crawl: {}'.format(len(need_to_crawl)))   
+    
+    unwanted = set(crawled_set) - set(users_set)
+    for unwanted_key in unwanted:
+        del friends_dictionary[unwanted_key]
+    dump_friends_dictionary(friends_dictionary)
+
+
+# In[10]:
+
+
+verify_friends_dictionary()
+friends_dictionary = load_friends_dictionary()
 
 
 # # Calculate Network
 
-# In[10]:
+# In[11]:
 
 
 def find_source(df, index):
@@ -282,22 +318,15 @@ def find_network():
     return df
 
 
-# In[11]:
+# In[12]:
 
 
 if calculate_network:
     network = find_network()
     network.head()
-    with open(config.settings['path']['pickle']['network_dataframe'], 'wb') as network_dataframe_file:
-        pickle.dump(network, network_dataframe_file)
+    dump_network_dataframe(network)
 
-
-# In[12]:
-
-
-with open(config.settings['path']['pickle']['network_dataframe'], 'rb') as network_dataframe_file:
-        network = pickle.load(network_dataframe_file)
-        pprint('Loaded {} entries'.format(len(network)))
+network = load_network_dataframe()
 
 
 # # Analysis

@@ -19,24 +19,12 @@ from tqdm import tqdm
 
 
 import config
-from config import load_users_dataframe
-users_dataframe = load_users_dataframe()
+from config import load_needcrawl_set
+from config import load_newcrawl_dictionary
+from config import dump_newcrawl_dictionary
 
 
 # In[3]:
-
-
-print(users_dataframe.head())
-
-
-# In[4]:
-
-
-from config import load_friends_dictionary
-from config import save_friends_dictionary
-
-
-# In[5]:
 
 
 class TwitterApi(object):
@@ -173,7 +161,7 @@ twitter_api_list.append(TwitterApi(
 ).loadapi())
 
 
-# In[6]:
+# In[4]:
 
 
 def tweet_find_friends(api, user_id, logger):
@@ -191,35 +179,10 @@ def tweet_find_friends(api, user_id, logger):
         
 def crawl_twitter_friend(api, friends_dictionary, user_id, logger):
     friends_dictionary[user_id] = tweet_find_friends(api, user_id, logger)
-    
-# def find_friends(api, friends_dictionary, user_id, logger):
-#     if user_id not in friends_dictionary.keys():
-#         friends_dictionary[user_id] = tweet_find_friends(api, user_id, logger)
-#         save_friends_dictionary(friends_dictionary)
-#         load_friends_dictionary()
-#         return friends_dictionary[user_id], 1
-#     return friends_dictionary[user_id], 0
 
-# def find_first_intersection_element(listA, listB):
-#     for element in listA:
-#         if element in listB:
-#             return element
-#     return ''
-
-
-# In[7]:
-
-
-friends_dictionary = load_friends_dictionary()
-all_users = set(users_dataframe.user_id)
-found_users = set(friends_dictionary.keys())
-need_to_crawl = all_users - found_users
+need_to_crawl = load_needcrawl_set()
+friends_dictionary = load_newcrawl_dictionary()
 print('Number of users we still need to crawl: {}'.format(len(need_to_crawl)))
-
-
-# In[ ]:
-
-
 api_counter = 0
 number_of_apis = len(twitter_api_list)
 with tqdm(total = len(need_to_crawl), unit='Twitter friendship', unit_scale=True, unit_divisor=1024) as pbar:
@@ -228,6 +191,6 @@ with tqdm(total = len(need_to_crawl), unit='Twitter friendship', unit_scale=True
             user_id = need_to_crawl.pop()
             crawl_twitter_friend(twitter_api_list[api_counter], friends_dictionary, user_id, api_counter)
         pbar.update(number_of_apis)
-        save_friends_dictionary(friends_dictionary)
-        friends_dictionary = load_friends_dictionary()
+        dump_newcrawl_dictionary(friends_dictionary)
+        friends_dictionary = load_newcrawl_dictionary()
 
