@@ -11,3 +11,4 @@ data/givenchy/pickle/*
 data/hawking/twitter/*
 data/hawking/pickle/*
 other/
+env.properties
