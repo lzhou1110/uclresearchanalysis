@@ -159,9 +159,16 @@ twitter_api_list.append(TwitterApi(
     '961359707809157122-EUhutRfRHEBPSeE791pVGzYd2oMMq87',
     'WrgrnvyxVNBFNtkDwD4e1sGw2rQNhvbiOU9YaGkgcK1jA'
 ).loadapi())
+# 浙大 刑 17
+twitter_api_list.append(TwitterApi(
+    'T5cDUb70emiXsUqIInL9cDo8v',
+    'mrdtfmZdaHI0c7C1i07F6YOs6Pvwg2br6P3KJ6jAFnXFJOAuYd',
+    '811130947982626816-LFaMFVl0nH51VP8Ug6PdythywNGs1V1',
+    '9NsemWbHwhH0KhERWGJyKIXZ7ws4iEqKiIMLjJA2VoPlO'
+).loadapi())
 
 
-# In[4]:
+# In[ ]:
 
 
 def tweet_find_friends(api, user_id, logger):
@@ -180,11 +187,14 @@ def tweet_find_friends(api, user_id, logger):
 def crawl_twitter_friend(api, friends_dictionary, user_id, logger):
     friends_dictionary[user_id] = tweet_find_friends(api, user_id, logger)
 
-need_to_crawl = load_needcrawl_set()
+    
 try:
     friends_dictionary = load_newcrawl_dictionary()
 except:
     friends_dictionary = {}
+    
+need_to_crawl = list(load_needcrawl_set() - friends_dictionary.keys())
+
 print('Number of users we still need to crawl: {}'.format(len(need_to_crawl)))
 api_counter = 0
 number_of_apis = len(twitter_api_list)
