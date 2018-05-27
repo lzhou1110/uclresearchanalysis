@@ -46,10 +46,12 @@ pprint(settings)
 
 def load_pickle_file(path):
     print('Loading data file from path {}'.format(path))
-    with open(path, 'rb') as file:
-        data = pickle.load(file)
-        pprint('Loaded {} entires'.format(len(data)))
-        return data
+    try:
+        with open(path, 'rb') as file:
+            data = pickle.load(file)
+            pprint('Loaded {} entires'.format(len(data)))
+            return data
+    except Exception as e: raise
     
 def save_pickle_file(path, data):
     print('Dumping data to path {}'.format(path))

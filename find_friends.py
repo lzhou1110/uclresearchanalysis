@@ -181,7 +181,10 @@ def crawl_twitter_friend(api, friends_dictionary, user_id, logger):
     friends_dictionary[user_id] = tweet_find_friends(api, user_id, logger)
 
 need_to_crawl = load_needcrawl_set()
-friends_dictionary = load_newcrawl_dictionary()
+try:
+    friends_dictionary = load_newcrawl_dictionary()
+except:
+    friends_dictionary = {}
 print('Number of users we still need to crawl: {}'.format(len(need_to_crawl)))
 api_counter = 0
 number_of_apis = len(twitter_api_list)
