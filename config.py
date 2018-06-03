@@ -14,6 +14,7 @@ profile = config.get(BASE, 'profile')
 
 settings = {}
 settings['timeframe'] = config.get(BASE, 'timeframe')
+settings['save_to_file'] = config.get(BASE, 'save_to_file')
 settings['calculate'] = {}
 settings['calculate']['uniquetweets'] = config.get(BASE, 'calculate.uniquetweets') == 'True'
 settings['calculate']['uniqueusers'] = config.get(BASE, 'calculate.uniqueusers') == 'True'
@@ -35,6 +36,10 @@ settings['path']['pickle']['network'] = pickle_path+ config.get(BASE, 'path.pick
 settings['path']['pickle']['friends'] = pickle_path + config.get(BASE, 'path.pickle.friends')
 settings['path']['pickle']['needcrawl'] = pickle_path + config.get(BASE, 'path.pickle.needcrawl')
 
+settings['path']['networkx'] = {}
+settings['path']['networkx']['all'] = pickle_path + config.get(BASE, 'path.networkx.all')
+settings['path']['networkx']['friends'] = pickle_path + config.get(BASE, 'path.networkx.friends')
+settings['path']['networkx']['potential'] = pickle_path + config.get(BASE, 'path.networkx.potential')
 
 settings['data'] = {}
 settings['data']['starttime'] = config.get(profile, 'data.starttime')
@@ -95,3 +100,22 @@ def load_newcrawl_dictionary():
     
 def dump_newcrawl_dictionary(data):
     save_pickle_file(settings['path']['newcrawl'], data)
+    
+def load_networkx_all():
+    return load_pickle_file(settings['path']['networkx']['all'])
+    
+def dump_networkx_all(data):
+    save_pickle_file(settings['path']['networkx']['all'], data)
+    
+def load_networkx_friends():
+    return load_pickle_file(settings['path']['networkx']['friends'])
+    
+def dump_networkx_friends(data):
+    save_pickle_file(settings['path']['networkx']['friends'], data)
+
+def load_networkx_potential():
+    return load_pickle_file(settings['path']['networkx']['potential'])
+    
+def dump_networkx_potential(data):
+    save_pickle_file(settings['path']['networkx']['potential'], data)
+    
