@@ -19,7 +19,7 @@ from config import load_networkx_potential
 
 # Plotting
 import matplotlib
-# matplotlib.use('Agg')
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import seaborn as sns
@@ -40,7 +40,7 @@ network_potential = load_networkx_potential()
 
 # # Basic Info
 
-# In[84]:
+# In[2]:
 
 
 depth = max(unique_users.generation) + 1
@@ -52,7 +52,7 @@ top10degree = sorted(dict(nx.degree(network_all)).items(), key=operator.itemgett
 
 # # Code
 
-# In[119]:
+# In[3]:
 
 
 def store_basic_info():
@@ -128,19 +128,19 @@ def plot_network(graph, title):
 
 # # Overview
 
-# In[120]:
+# In[4]:
 
 
 store_basic_info()
 
 
-# In[83]:
+# In[5]:
 
 
 plot_network(network_all, 'Visualization of the entire network for event {}'.format(project_name))
 
 
-# In[19]:
+# In[7]:
 
 
 def plot_degree_frequency(network):
@@ -158,7 +158,7 @@ def plot_degree_frequency(network):
 plot_degree_frequency(network_all)
 
 
-# In[17]:
+# In[8]:
 
 
 def plot_time_lapsed_vs_newly_infected_users():
@@ -188,7 +188,7 @@ plot_time_lapsed_vs_newly_infected_users()
 
 # # Seeds
 
-# In[45]:
+# In[9]:
 
 
 def plot_time_vs_log_seed_descedants(network):
@@ -207,7 +207,7 @@ def plot_time_vs_log_seed_descedants(network):
 plot_time_vs_log_seed_descedants(unique_users)
 
 
-# In[8]:
+# In[10]:
 
 
 def order_and_reindex(df, column):
@@ -226,7 +226,7 @@ def plot_time_vs_number_of_seeds(df):
 plot_time_vs_number_of_seeds(unique_users)
 
 
-# In[42]:
+# In[11]:
 
 
 def plot_log_spreading_graph(df):
@@ -258,7 +258,7 @@ def plot_log_spreading_graph(df):
 plot_log_spreading_graph(unique_users)
 
 
-# In[40]:
+# In[12]:
 
 
 def plot_time_after_spreading_vs_log_10_number_of_newly_infected_user(df):
@@ -286,7 +286,7 @@ plot_time_after_spreading_vs_log_10_number_of_newly_infected_user(unique_users)
 
 # # Seed Details
 
-# In[93]:
+# In[5]:
 
 
 def plot_seed(x):
@@ -400,25 +400,25 @@ def plot_forward_bar(g, x):
 
 # ## 1st Largest Seed
 
-# In[20]:
+# In[9]:
 
 
 plot_seed(top10seeds.keys()[0])
 
 
-# In[49]:
+# In[7]:
 
 
 plot_seed_bar(top10seeds.keys()[0])
 
 
-# In[69]:
+# In[8]:
 
 
 top_degree_nodes_in_seed_network(top10seeds.keys()[0])
 
 
-# In[86]:
+# In[ ]:
 
 
 g = calculate_forward_graph(top10seeds.keys()[0])
@@ -476,37 +476,37 @@ plot_forward_bar(g, top10seeds.keys()[1])
 
 # ## 3rd Largest Seed
 
-# In[100]:
+# In[19]:
 
 
 plot_seed(top10seeds.keys()[2])
 
 
-# In[108]:
+# In[16]:
 
 
 plot_seed_bar(top10seeds.keys()[2])
 
 
-# In[109]:
+# In[17]:
 
 
 top_degree_nodes_in_seed_network(top10seeds.keys()[2])
 
 
-# In[122]:
+# In[18]:
 
 
 g = calculate_forward_graph(top10seeds.keys()[2])
 
 
-# In[123]:
+# In[ ]:
 
 
 forward_graph_for_seed(g, top10seeds.keys()[2])
 
 
-# In[124]:
+# In[ ]:
 
 
 plot_forward_bar(g, top10seeds.keys()[2])
