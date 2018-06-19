@@ -41,6 +41,8 @@ settings['path']['networkx']['all'] = pickle_path + config.get(BASE, 'path.netwo
 settings['path']['networkx']['friends'] = pickle_path + config.get(BASE, 'path.networkx.friends')
 settings['path']['networkx']['potential'] = pickle_path + config.get(BASE, 'path.networkx.potential')
 
+settings['path']['ml'] = pickle_path
+
 settings['data'] = {}
 settings['data']['starttime'] = config.get(profile, 'data.starttime')
 settings['data']['eventname'] = config.get(profile, 'data.eventname')
@@ -119,3 +121,8 @@ def load_networkx_potential():
 def dump_networkx_potential(data):
     save_pickle_file(settings['path']['networkx']['potential'], data)
     
+def load_ml_data(interval):
+    return load_pickle_file(settings['path']['ml'] + '/{}_data.dat'.format(interval))
+
+def dump_ml_data(data, interval):
+    save_pickle_file(settings['path']['ml'] + '/{}_data.dat'.format(interval), data)
