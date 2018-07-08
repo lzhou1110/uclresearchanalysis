@@ -12,3 +12,4 @@ data/hawking/twitter/*
 data/hawking/pickle/*
 other/
 env.properties
+nohup.out
