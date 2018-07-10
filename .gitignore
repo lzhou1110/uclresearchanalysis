@@ -11,5 +11,5 @@ data/givenchy/pickle/*
 data/hawking/twitter/*
 data/hawking/pickle/*
 other/
-env.properties
 nohup.out
+twitter_keys.csv

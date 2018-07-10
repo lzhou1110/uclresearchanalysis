@@ -3,6 +3,7 @@ import os
 import configparser
 import pickle
 from pprint import pprint
+import pandas as pd
 
 # Importing the project name from global namespace
 # Options are: GIVENCHY, HAWKING, NYC, FLORIDA
@@ -28,6 +29,7 @@ settings['calculate']['friends'] = config.get(BASE, 'calculate.friends') == 'Tru
 
 settings['path'] = {}
 settings['path']['cwd'] = root_path + config.get(profile, 'path.project')
+settings['path']['other'] = root_path + config.get(BASE, 'path.other')
 settings['path']['newcrawl'] = root_path + config.get(BASE, 'path.newcrawl')
 settings['path']['twitter'] = settings['path']['cwd'] + config.get(BASE, 'path.twitter')
 settings['path']['result'] = settings['path']['cwd'] + config.get(BASE, 'path.result')
@@ -68,7 +70,7 @@ def save_pickle_file(path, data):
     print('Dumping data to path {}'.format(path))
     with open(path, 'wb') as file:
         pickle.dump(data, file)
-    pprint('Finished dumping data to path {}'.format(path))
+    print('Finished dumping data to path {}'.format(path))
     
 
 def load_tweets_dataframe():
@@ -101,11 +103,11 @@ def load_needcrawl_set():
 def dump_needcrawl_set(data):
     save_pickle_file(settings['path']['pickle']['needcrawl'], data)
     
-def load_newcrawl_dictionary():
-    return load_pickle_file(settings['path']['newcrawl'])
+def load_newcrawl_dictionary(filename):
+    return load_pickle_file('{}/{}'.format(settings['path']['other'], filename))
     
-def dump_newcrawl_dictionary(data):
-    save_pickle_file(settings['path']['newcrawl'], data)
+def dump_newcrawl_dictionary(data, filename):
+    save_pickle_file('{}/{}'.format(settings['path']['other'], filename), data)
     
 def load_networkx_all():
     return load_pickle_file(settings['path']['networkx']['all'])
@@ -126,10 +128,14 @@ def dump_networkx_potential(data):
     save_pickle_file(settings['path']['networkx']['potential'], data)
     
 def load_ml_data(interval):
-    return load_pickle_file(settings['path']['ml'] + '/{}_data.dat'.format(interval))
+    dataframe = load_pickle_file(settings['path']['ml'] + '/{}_data.dat'.format(interval))
+    return dataframe
 
 def dump_ml_data(data, interval):
     save_pickle_file(settings['path']['ml'] + '/{}_data.dat'.format(interval), data)
     
 def dump_ml_model(data, name):
     save_pickle_file(settings['path']['ml'] + '/{}_model.dat'.format(name), data)
+    
+def load_twitter_keys():
+    return pd.read_csv(root_path + '/twitter_keys.csv')

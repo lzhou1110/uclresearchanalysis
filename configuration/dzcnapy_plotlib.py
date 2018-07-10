@@ -3,13 +3,18 @@ Library for plotting graphs in DZCNAPY
 """
 import matplotlib
 import matplotlib.pyplot as plt
-import config
-matplotlib.rc("font", family="Arial")
+
+import configuration.config as config
+
+results_path = config.settings['path']['result']
+print(results_path)
+
+matplotlib.rc("font", family="DejaVu Sans")
 matplotlib.style.use("grayscale")
 
 attrs = {
     "edge_color" : "gray",
-    "font_family" : "Liberation Sans Narrow",
+    "font_family" : "DejaVu Sans",
     "font_size" : 15,
     "font_weight" : "bold",
     "node_color" : "pink",
@@ -58,6 +63,6 @@ def plot(fname, size, save = False):
     fig.set_size_inches(size[0], size[1], forward=True)
     plt.rcParams['figure.figsize'] = size
     if save:
-        plt.savefig("{}/{}.pdf".format(config.settings['path']['result'], fname), dpi=600)
+        plt.savefig("{}/{}.pdf".format(results_path, fname), dpi=600)
     plt.show()
     plt.close()
