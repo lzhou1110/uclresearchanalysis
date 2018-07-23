@@ -13,3 +13,4 @@ data/hawking/pickle/*
 other/
 nohup.out
 twitter_keys.csv
+database_keys.csv

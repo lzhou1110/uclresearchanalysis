@@ -1,13 +1,13 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[ ]:
 
 
 get_ipython().run_line_magic('cd', '..')
 
 
-# In[2]:
+# In[ ]:
 
 
 import builtins
@@ -18,7 +18,7 @@ builtins.uclresearch_topic = 'NYC'
 from configuration import config
 
 
-# In[3]:
+# In[ ]:
 
 
 import time
@@ -36,7 +36,7 @@ import threading
 import time
 
 
-# In[4]:
+# In[ ]:
 
 
 class TwitterApi(object):
@@ -56,7 +56,7 @@ class TwitterApi(object):
             compression=True)
 
 
-# In[5]:
+# In[ ]:
 
 
 def crawl_friendship(thread_name, api, user_id):
@@ -73,7 +73,7 @@ def crawl_friendship(thread_name, api, user_id):
     return follower_ids
 
 
-# In[6]:
+# In[ ]:
 
 
 def save_friendship(thread_name, friendship_dictionary):
@@ -83,7 +83,7 @@ def save_friendship(thread_name, friendship_dictionary):
     config.dump_newcrawl_dictionary(friendship_dictionary, filename)
 
 
-# In[7]:
+# In[ ]:
 
 
 class crwalThread(threading.Thread):
@@ -95,7 +95,7 @@ class crwalThread(threading.Thread):
         self.user_ids = user_ids
     def run(self):
         print('{}: {}'.format(self.thread_name, ': starting'))
-        dump_dictionary_if_over_this_size = 100
+        dump_dictionary_if_over_this_size = 15
         friends_dictionary = {}
         while len(self.user_ids) > 0:
             user_id = self.user_ids.pop()
@@ -107,7 +107,7 @@ class crwalThread(threading.Thread):
         print('{}: {}'.format(self.thread_name, ': exiting'))
 
 
-# In[8]:
+# In[ ]:
 
 
 def split(a, n):
@@ -115,7 +115,7 @@ def split(a, n):
     return (a[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in range(n))
 
 
-# In[9]:
+# In[ ]:
 
 
 keys = config.load_twitter_keys()

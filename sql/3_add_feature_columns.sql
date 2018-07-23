@@ -1,0 +1,10 @@
+ALTER TABLE `user`
+    DROP COLUMN `days_since_created`,
+    DROP COLUMN `normalizedUserStatusesCount`,
+    DROP COLUMN `normalizedUserFollowersCount`,
+    DROP COLUMN `normalizedUserFavouritesCount`,
+    DROP COLUMN `normalizedUserListedCount`,
+    DROP COLUMN `normalizedUserFriendsCount`,
+    DROP COLUMN `inDegree`,
+    DROP COLUMN `outDegree`,
+    DROP COLUMN `degree`;

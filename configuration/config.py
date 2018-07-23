@@ -25,14 +25,16 @@ settings['calculate']['uniquetweets'] = config.get(BASE, 'calculate.uniquetweets
 settings['calculate']['uniqueusers'] = config.get(BASE, 'calculate.uniqueusers') == 'True'
 settings['calculate']['network'] = config.get(BASE, 'calculate.network') == 'True'
 settings['calculate']['analysis'] = config.get(BASE, 'calculate.analysis') == 'True'
-settings['calculate']['friends'] = config.get(BASE, 'calculate.friends') == 'True'
+# settings['calculate']['friends'] = config.get(BASE, 'calculate.friends') == 'True'
 
 settings['path'] = {}
 settings['path']['cwd'] = root_path + config.get(profile, 'path.project')
-settings['path']['other'] = root_path + config.get(BASE, 'path.other')
-settings['path']['newcrawl'] = root_path + config.get(BASE, 'path.newcrawl')
 settings['path']['twitter'] = settings['path']['cwd'] + config.get(BASE, 'path.twitter')
 settings['path']['result'] = settings['path']['cwd'] + config.get(BASE, 'path.result')
+# Crawling paths
+settings['path']['crawl'] = {}
+settings['path']['crawl']['friends'] = root_path + config.get(BASE, 'path.crawl.friends')
+settings['path']['crawl']['followers'] = root_path + config.get(BASE, 'path.crawl.followers')
 
 pickle_path = settings['path']['cwd'] + config.get(BASE, 'path.pickle')
 settings['path']['pickle'] = {}
@@ -40,7 +42,20 @@ settings['path']['pickle']['tweets'] = pickle_path+ config.get(BASE, 'path.pickl
 settings['path']['pickle']['users'] = pickle_path+ config.get(BASE, 'path.pickle.users')
 settings['path']['pickle']['network'] = pickle_path+ config.get(BASE, 'path.pickle.network')
 settings['path']['pickle']['friends'] = pickle_path + config.get(BASE, 'path.pickle.friends')
+settings['path']['pickle']['followers'] = pickle_path + config.get(BASE, 'path.pickle.followers')
 settings['path']['pickle']['needcrawl'] = pickle_path + config.get(BASE, 'path.pickle.needcrawl')
+settings['path']['pickle']['followersneedcrawl'] = pickle_path + config.get(BASE, 'path.pickle.followersneedcrawl')
+settings['path']['pickle']['infected_user_ids'] = pickle_path + '/infected_user_ids.dat'
+settings['path']['pickle']['exposed_user_ids_selected'] = pickle_path + '/exposed_user_ids_selected.dat'
+def dump_infected_user_ids(data):
+    save_pickle_file(settings['path']['pickle']['infected_user_ids'], data)
+def load_infected_user_ids():
+    return load_pickle_file(settings['path']['pickle']['infected_user_ids'])
+def dump_exposed_user_ids_selected(data):
+    save_pickle_file(settings['path']['pickle']['exposed_user_ids_selected'], data)
+def load_exposed_user_ids_selected():
+    return load_pickle_file(settings['path']['pickle']['exposed_user_ids_selected'])
+
 
 settings['path']['networkx'] = {}
 settings['path']['networkx']['all'] = pickle_path + config.get(BASE, 'path.networkx.all')
@@ -97,17 +112,35 @@ def load_friends_dictionary():
 def dump_friends_dictionary(data):
     save_pickle_file(settings['path']['pickle']['friends'], data)
     
+def load_followers_dictionary():
+    return load_pickle_file(settings['path']['pickle']['followers'])
+
+def dump_followers_dictionary(data):
+    save_pickle_file(settings['path']['pickle']['followers'], data) 
+
+def load_followers_needcrawl_set():
+    return load_pickle_file(settings['path']['pickle']['followersneedcrawl'])
+    
+def dump_followers_needcrawl_set(data):
+    save_pickle_file(settings['path']['pickle']['followersneedcrawl'], data)
+
 def load_needcrawl_set():
     return load_pickle_file(settings['path']['pickle']['needcrawl'])
     
 def dump_needcrawl_set(data):
     save_pickle_file(settings['path']['pickle']['needcrawl'], data)
     
-def load_newcrawl_dictionary(filename):
-    return load_pickle_file('{}/{}'.format(settings['path']['other'], filename))
+def load_new_friends_dictionary(filename):
+    return load_pickle_file('{}/{}'.format(settings['path']['crawl']['friends'], filename))
     
-def dump_newcrawl_dictionary(data, filename):
-    save_pickle_file('{}/{}'.format(settings['path']['other'], filename), data)
+def dump_new_friends_dictionary(data, filename):
+    save_pickle_file('{}/{}'.format(settings['path']['crawl']['friends'], filename), data)
+
+def load_new_followers_dictionary(filename):
+    return load_pickle_file('{}/{}'.format(settings['path']['crawl']['followers'], filename))
+
+def dump_new_follwers_dictionary(data, filename):
+    save_pickle_file('{}/{}'.format(settings['path']['crawl']['followers'], filename), data)
     
 def load_networkx_all():
     return load_pickle_file(settings['path']['networkx']['all'])
@@ -137,5 +170,3 @@ def dump_ml_data(data, interval):
 def dump_ml_model(data, name):
     save_pickle_file(settings['path']['ml'] + '/{}_model.dat'.format(name), data)
     
-def load_twitter_keys():
-    return pd.read_csv(root_path + '/twitter_keys.csv')
