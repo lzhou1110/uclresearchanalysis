@@ -9,6 +9,7 @@ from random import shuffle
 
 # Split a into n portions
 def split(a, n):
+    a = list(a)
     if (len(a) == 0):
         return []
     else:
@@ -73,7 +74,7 @@ class CrawlThread(threading.Thread):
             self._database.connect()
             db_result = self._database.queryUnorderedTwitterUsers(self._ids)
             self._database.close()
-
+            self._log('Database result obtained')
             ids_found_in_db = set([x['id'] for x in db_result])
             ids_not_found_in_db = set(self._ids) - ids_found_in_db
 
